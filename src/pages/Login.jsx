@@ -3,21 +3,27 @@ import React, { useState } from "react";
 import { auth } from "../firebase";
 import { toast } from "react-toastify";
 import SignInwithGoogle from "./signInWIthGoogle";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle login logic here
-    console.log('Logging in with', email, password);
+    localStorage.setItem("email", email);
+    window.dispatchEvent(new Event("storage")); // 👈 trigger Header to re-fetch
+    navigate("/cars");
   };
 
   return (
     <div className="container d-flex align-items-center justify-content-center vh-100">
-      <div className="card shadow p-4" style={{ maxWidth: '400px', width: '100%' }}>
+      <div
+        className="card shadow p-4"
+        style={{ maxWidth: "400px", width: "100%" }}
+      >
         <h3 className="text-center mb-4">🔐 Login to Your Account</h3>
 
         <form onSubmit={handleSubmit}>
@@ -66,5 +72,5 @@ function Login() {
       </div>
     </div>
   );
-};
+}
 export default Login;

@@ -8,134 +8,79 @@ import img06 from "../all-images/cars-img/mercedes-offer.png";
 import img07 from "../all-images/cars-img/toyota-offer-2.png";
 import img08 from "../all-images/cars-img/mercedes-offer.png";
 
-const carData = [
-  {
-    id: 1,
-    brand: "Tesla",
-    rating: 112,
-    carName: "Tesla Malibu",
-    imgUrl: img01,
-    model: "Model 3",
-    price: 50,
-    speed: "20kmpl",
-    gps: "GPS Navigation",
-    seatType: "Heated seats",
-    automatic: "Automatic",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
+const carData = Array.from({ length: 50 }).map((_, index) => {
+  const id = index + 1;
+  const brands = [
+    "Tesla",
+    "BMW",
+    "Audi",
+    "Mercedes",
+    "Toyota",
+    "Hyundai",
+    "Kia",
+  ];
+  const models = [
+    "Model X",
+    "X5",
+    "A4",
+    "E-Class",
+    "Fortuner",
+    "Creta",
+    "Seltos",
+  ];
+  const locations = ["Pune", "Mumbai", "Delhi", "Bangalore", "Hyderabad"];
+  const seats = ["Leather Seats", "Heated Seats", "Memory Seats"];
+  const featuresList = [
+    "Sunroof",
+    "Navigation",
+    "Bluetooth",
+    "Rear Camera",
+    "Lane Assist",
+    "Cruise Control",
+    "Wireless Charging",
+    "Ambient Lighting",
+  ];
+  const imgs = [img01, img02, img02, img04, img05, img06, img07, img08];
 
-  {
-    id: 2,
-    brand: "Toyota",
-    rating: 102,
-    carName: "Toyota Aventador",
-    imgUrl: img02,
-    model: "Model-2022",
-    price: 50,
-    speed: "20kmpl",
-    gps: "GPS Navigation",
-    seatType: "Heated seats",
-    automatic: "Automatic",
-    description:
-      " Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam. Dolor labore lorem no accusam sit justo sadipscing labore invidunt voluptua, amet duo et gubergren vero gubergren dolor. At diam.",
-  },
+  const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const randomRating = (min = 4.3, max = 5.0) =>
+    (Math.random() * (max - min) + min).toFixed(1);
 
-  {
-    id: 3,
-    brand: "BMW",
-    rating: 132,
-    carName: "BMW X3",
-    imgUrl: img03,
-    model: "Model-2022",
-    price: 650,
-    speed: "20kmpl",
+  return {
+    id,
+    brand: random(brands),
+    rating: parseFloat(randomRating()),
+    carName: `${random(brands)} ${random(models)} ${id}`,
+    imgUrl: imgs[id % imgs.length],
+    model: `20${Math.floor(Math.random() * 5 + 20)}`,
+    price: Math.floor(Math.random() * 5000 + 5000),
+    speed: `${Math.floor(Math.random() * 50 + 200)} km/h`,
     gps: "GPS Navigation",
-    seatType: "Heated seats",
+    seatType: random(seats),
     automatic: "Automatic",
+    fuelEconomy: `${Math.floor(Math.random() * 10 + 10)} km/l`,
+    location: random(locations),
     description:
-      " Mercedes is known for its long-lasting cars, because they are built with such elegant craftsmanship. With premium parts, knowledgeable workers, and attention to detail, a Benz may be an investment, but it's a durable one that stands the test of time.",
-  },
-
-  {
-    id: 4,
-    brand: "Nissan",
-    rating: 102,
-    carName: "Nissan Mercielago",
-    imgUrl: img04,
-    model: "Model-2022",
-    price: 700,
-    speed: "20kmpl",
-    gps: "GPS Navigation",
-    seatType: "Heated seats",
-    automatic: "Automatic",
-    description:
-      "Mercedes is known for its long-lasting cars, because they are built with such elegant craftsmanship. With premium parts, knowledgeable workers, and attention to detail, a Benz may be an investment, but it's a durable one that stands the test of time.",
-  },
-
-  {
-    id: 5,
-    brand: "Ferrari",
-    rating: 94,
-    carName: "Ferrari Camry",
-    imgUrl: img05,
-    model: "Model-2022",
-    price: 450,
-    speed: "20kmpl",
-    gps: "GPS Navigation",
-    seatType: "Heated seats",
-    automatic: "Automatic",
-    description:
-      " Mercedes is known for its long-lasting cars, because they are built with such elegant craftsmanship. With premium parts, knowledgeable workers, and attention to detail, a Benz may be an investment, but it's a durable one that stands the test of time.",
-  },
-
-  {
-    id: 6,
-    brand: "Mercedes",
-    rating: 119,
-    carName: "Mercedes Benz XC90",
-    imgUrl: img06,
-    model: "Model-2022",
-    price: 850,
-    speed: "20kmpl",
-    gps: "GPS Navigation",
-    seatType: "Heated seats",
-    automatic: "Automatic",
-    description:
-      " Mercedes is known for its long-lasting cars, because they are built with such elegant craftsmanship. With premium parts, knowledgeable workers, and attention to detail, a Benz may be an investment, but it's a durable one that stands the test of time.",
-  },
-
-  {
-    id: 7,
-    brand: "Audi",
-    rating: 82,
-    carName: "Audi Fiesta",
-    imgUrl: img07,
-    model: "Model 3",
-    price: 500,
-    speed: "20kmpl",
-    gps: "GPS Navigation",
-    seatType: "Heated seats",
-    automatic: "Automatic",
-    description:
-      " Mercedes is known for its long-lasting cars, because they are built with such elegant craftsmanship. With premium parts, knowledgeable workers, and attention to detail, a Benz may be an investment, but it's a durable one that stands the test of time.",
-  },
-
-  {
-    id: 8,
-    brand: "Colorado",
-    rating: 52,
-    carName: "Rolls Royce Colorado",
-    imgUrl: img08,
-    model: "Model 3",
-    price: 500,
-    speed: "20kmpl",
-    gps: "GPS Navigation",
-    seatType: "Heated seats",
-    automatic: "Automatic",
-    description:
-      " Mercedes is known for its long-lasting cars, because they are built with such elegant craftsmanship. With premium parts, knowledgeable workers, and attention to detail, a Benz may be an investment, but it's a durable one that stands the test of time.",
-  },
-];
+      "Experience luxury and performance with this premium vehicle, offering a perfect blend of comfort and cutting-edge technology.",
+    features: Array.from({ length: 4 }).map(() => random(featuresList)),
+    reviews: [
+      {
+        user: "User " + id,
+        rating: parseFloat(randomRating()),
+        comment: "Great experience. Would rent again!",
+      },
+      {
+        user: "Guest " + id,
+        rating: parseFloat(randomRating()),
+        comment: "Smooth drive and very comfortable.",
+      },
+    ],
+    gallery: [
+      imgs[(id + 1) % imgs.length],
+      imgs[(id + 2) % imgs.length],
+      imgs[(id + 3) % imgs.length],
+    ],
+  };
+});
 
 export default carData;

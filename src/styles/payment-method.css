@@ -11,3 +11,63 @@
   border: none;
   outline: none;
 }
+.reservation-success {
+  animation: fadeInUp 1s ease forwards;
+  background: #f3fff0;
+  border: 2px solid #28a745;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.congrats-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #28a745;
+  animation: popIn 0.6s ease-in-out;
+}
+
+.car-gif {
+  height: 120px;
+  animation: driveIn 1s ease-out;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes driveIn {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

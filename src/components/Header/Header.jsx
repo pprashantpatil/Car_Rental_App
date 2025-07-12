@@ -34,34 +34,43 @@ const Header = () => {
   const [userDetails, setUserDetails] = useState(null);
 
   // Function to fetch user data
-  const fetchUserData = async (user) => {
-    console.log("Fetching user data for user: ", user.uid);
-    try {
-      const docRef = doc(db, "Users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserDetails(docSnap.data());
-        console.log("User details fetched: ", docSnap.data());
-      } else {
-        console.log("No user data found!");
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+  // const fetchUserData = async (user) => {
+  //   console.log("Fetching user data for user: ", user.uid);
+  //   try {
+  //     const docRef = doc(db, "Users", user.uid);
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists()) {
+  //       setUserDetails(docSnap.data());
+  //       console.log("User details fetched: ", docSnap.data());
+  //     } else {
+  //       console.log("No user data found!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //   }
+  // };
+  const fetchUserData = async () => {
+    const email = localStorage.getItem("email");
+
+    if (!email) {
+      console.log("No email found in localStorage.");
+      return;
     }
+
+    setUserDetails(email);
+    console.log("Fetching user data for email: ", email);
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log("Fetch user Data", user);
-        fetchUserData(user);
-      } else {
-        console.log("Fetch user Data no user has been noted yet");
-        setUserDetails(null);
-      }
-    });
+    fetchUserData(); // Run on mount
 
-    return () => unsubscribe();
+    const handleStorageChange = () => {
+      fetchUserData(); // Run again if localStorage changes (after login)
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const toggleMenu = () => menuRef.current.classList.toggle("menu__active");
@@ -70,6 +79,8 @@ const Header = () => {
     signOut(auth)
       .then(() => {
         setUserDetails(null);
+        localStorage.removeItem("email");
+        window.dispatchEvent(new Event("storage")); // 👈 notify header
       })
       .catch((error) => {
         console.error("Error logging out:", error);
@@ -91,25 +102,34 @@ const Header = () => {
               </div>
             </Col>
             <Col>
-            <div className="header__top_center">
-             
+              <div className="header__top_center">
                 {userDetails ? (
-                  <h5 style={{ color: "white" }}>
-                    Welcome {userDetails?.firstName}
-                  </h5>
+                  <h5 style={{ color: "white" }}>Welcome {userDetails}</h5>
                 ) : (
-                  <h5 style={{ color: "white" }}>Welcome To Car Rental Services </h5>
+                  <h5 style={{ color: "white" }}>
+                    Welcome To Car Rental Services{" "}
+                  </h5>
                 )}
-             
-            </div>
+              </div>
             </Col>
 
             <Col lg="6" md="6" sm="6">
               <div className="header__top__right d-flex align-items-center justify-content-end gap-3">
                 {!userDetails ? (
-                  <Link to="/login" className="d-flex align-items-center gap-1">
-                    <i className="ri-login-circle-line"></i> Login
-                  </Link>
+                  <>
+                    <Link
+                      to="/login"
+                      className="d-flex align-items-center gap-1"
+                    >
+                      <i className="ri-login-circle-line"></i> Login
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="d-flex align-items-center gap-1"
+                    >
+                      <i className="ri-user-line"></i> Register
+                    </Link>
+                  </>
                 ) : (
                   <Link
                     to="/home"
@@ -119,12 +139,6 @@ const Header = () => {
                     <i className="ri-login-circle-line"></i> LogOut
                   </Link>
                 )}
-                <Link
-                  to="/register"
-                  className="d-flex align-items-center gap-1"
-                >
-                  <i className="ri-user-line"></i> Register
-                </Link>
               </div>
             </Col>
           </Row>

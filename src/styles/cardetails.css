@@ -1,0 +1,48 @@
+.animated-book-btn {
+  background: linear-gradient(135deg, #3c3883, #43c6ac);
+  border: none;
+  font-size: 1.1rem;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(60, 56, 131, 0.4);
+}
+
+.animated-book-btn:hover {
+  background: linear-gradient(135deg, #43c6ac, #3c3883);
+  transform: translateY(1px);
+  box-shadow: 2px 2px 20px rgba(60, 56, 131, 0.5);
+}
+
+/* Car bounce animation */
+.car-icon {
+  display: inline-block;
+  animation: bounceCar 1.3s infinite;
+  font-size: 1.4rem;
+}
+.car-icon {
+  display: inline-block;
+  animation: slideCar 1.8s ease-in-out infinite;
+}
+
+/* @keyframes slideCar {
+  0% { transform: translateX(-2px); }
+  50% { transform: translateX(6px); }
+  100% { transform: translateX(-2px); }
+} */
+
+@keyframes slideCar {
+  0%,
+  100% {
+    transform: translateX(0px) translateY(0px);
+  }
+  25% {
+    transform: translateX(2px) translateY(-3px);
+  }
+  50% {
+    transform: translateX(4px) translateY(1px);
+  }
+  75% {
+    transform: translateX(2px) translateY(-2px);
+  }
+}
