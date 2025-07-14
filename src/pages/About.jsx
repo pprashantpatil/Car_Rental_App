@@ -28,14 +28,13 @@ const About = () => {
                   We Are Committed To Provide Safe Ride Solutions
                 </h2>
 
-                <p className="section__description">
-                
-                </p>
+                <p className="section__description"></p>
 
                 <p className="section__description">
-                Waiting for a taxi or bus for transportation, whether from the airport or your hotel, 
-            can lead to time wasted during holiday or business travel. Renting a car allows you to
-            go directly to your destination.
+                  Waiting for a taxi or bus for transportation, whether from the
+                  airport or your hotel, can lead to time wasted during holiday
+                  or business travel. Renting a car allows you to go directly to
+                  your destination.
                 </p>
 
                 <div className=" d-flex align-items-center gap-3 mt-4">

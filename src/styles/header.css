@@ -1,7 +1,7 @@
 .header__top {
   padding: 10px 0px;
-/* Header or Background */
-background: #3c3883;;
+  /* Header or Background */
+  background: #3c3883;
   color: #fff;
 }
 
@@ -23,7 +23,7 @@ background: #3c3883;;
 
 .header__top__help i {
   background: #fff;
-  color: #3c3883;;
+  color: #3c3883;
   padding: 2px 4px;
   border-radius: 50px;
   font-size: 0.7rem;
@@ -79,7 +79,7 @@ background: #3c3883;;
 }
 
 .header__btn {
-  background: #3c3883; 
+  background: #3c3883;
   padding: 10px 20px;
   border: none;
   outline: none;
@@ -275,5 +275,36 @@ background: #3c3883;;
 
   .btn {
     padding: 7px 12px; /* Slightly reduce padding for smaller screens */
+  }
+}
+.car-marquee-banner {
+  position: relative;
+  background-color: white; /* or any blue you want */
+  overflow: hidden;
+  border-radius: 8px;
+  height: 80px; /* adjust based on your UI */
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.marquee-content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  animation: scroll-horizontal 10s linear infinite;
+}
+
+.marquee-video {
+  height: 100%;
+  width: auto;
+}
+
+@keyframes scroll-horizontal {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
   }
 }

@@ -27,6 +27,10 @@ const navLinks = [
     path: "/contact",
     display: "Contact",
   },
+  {
+    path: "/Faq",
+    display: "FAQ",
+  },
 ];
 
 const Header = () => {
@@ -89,6 +93,19 @@ const Header = () => {
 
   return (
     <header className="header">
+      {/* <div className="banner-wrapper">
+      
+        <div className="car-video">
+          <video
+            src={bookingcompleted}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="car-move"
+          />
+        </div>
+      </div> */}
       {/* ============ header top ============ */}
       <div className="header__top">
         <Container>
@@ -144,9 +161,10 @@ const Header = () => {
           </Row>
         </Container>
       </div>
+      {/* === Marquee Car Banner === */}
 
       {/* =============== header middle =========== */}
-      <div className="header__middle">
+      {/* <div className="header__middle">
         <Container>
           <Row>
             <Col lg="4" md="3" sm="4">
@@ -200,7 +218,7 @@ const Header = () => {
             </Col>
           </Row>
         </Container>
-      </div>
+      </div> */}
 
       {/* ========== main navigation =========== */}
 

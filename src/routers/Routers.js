@@ -13,6 +13,8 @@ import Register from "../pages/Register";
 import BookingPage from "../pages/BookingPage";
 import { auth } from "../firebase";
 
+import Faq from "../pages/Faq";
+
 const Routers = () => {
   const [user, setUser] = useState();
   useEffect(() => {
@@ -29,6 +31,7 @@ const Routers = () => {
       <Route path="/cars" element={<CarListing />} />
       <Route path="/cars/:slug" element={<CarDetails />} />
       <Route path="/blogs" element={<Blog />} />
+      <Route path="/Faq" element={<Faq />} />
       <Route path="/blogs/:slug" element={<BlogDetails />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/Login" element={<Login />} />

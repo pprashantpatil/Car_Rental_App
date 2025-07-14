@@ -11,9 +11,7 @@ import BecomeDriverSection from "../components/UI/BecomeDriverSection";
 import Testimonial from "../components/UI/Testimonial";
 import BlogList from "../components/UI/BlogList";
 import HeroSearch from "../components/UI/HeroSearch";
-
-
-
+import bookingcompleted from "../assets/icons/bookingcompleted.mp4";
 
 const Home = () => {
   return (
@@ -32,7 +30,19 @@ const Home = () => {
               </Col>
 
               <Col lg="8" md="8" sm="12">
-              <HeroSearch />
+                <div className="car-marquee-banner">
+                  <div className="marquee-content">
+                    <video
+                      src={bookingcompleted}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="marquee-video"
+                    />
+                  </div>
+                </div>
+                <HeroSearch />
                 {/* <FindCarForm /> */}
               </Col>
             </Row>
@@ -82,8 +92,8 @@ const Home = () => {
             </Col>
             <Testimonial />
           </Row>
-       </Container>
-     </section>
+        </Container>
+      </section>
 
       {/* =============== blog section =========== */}
       <section>
