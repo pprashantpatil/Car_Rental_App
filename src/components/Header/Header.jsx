@@ -10,26 +10,32 @@ const navLinks = [
   {
     path: "/home",
     display: "Home",
+    icon: "ri-home-5-line",
   },
   {
     path: "/about",
     display: "About",
+    icon: "ri-information-line",
   },
   {
     path: "/cars",
     display: "Cars",
+    icon: "ri-car-line",
   },
   {
     path: "/blogs",
     display: "Blog",
+    icon: "ri-article-line",
   },
   {
     path: "/contact",
     display: "Contact",
+    icon: "ri-contacts-book-line",
   },
   {
     path: "/Faq",
     display: "FAQ",
+    icon: "ri-question-answer-line",
   },
 ];
 
@@ -232,15 +238,20 @@ const Header = () => {
             <div className="navigation" ref={menuRef} onClick={toggleMenu}>
               <div className="menu">
                 {navLinks.map((item, index) => (
-                  <NavLink
-                    to={item.path}
-                    className={(navClass) =>
-                      navClass.isActive ? "nav__active nav__item" : "nav__item"
-                    }
-                    key={index}
-                  >
-                    {item.display}
-                  </NavLink>
+                  <div className="menu-section" key={index}>
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        isActive ? "nav__active nav__item" : "nav__item"
+                      }
+                    >
+                      <i
+                        className={item.icon}
+                        style={{ marginRight: "10px" }}
+                      ></i>
+                      {item.display}
+                    </NavLink>
+                  </div>
                 ))}
               </div>
             </div>

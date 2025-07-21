@@ -17,15 +17,33 @@ function Register() {
     e.preventDefault();
 
     try {
-      setAccountCreated(true);
+      const response = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: fname,
+          lastName: lname,
+          email: email,
+          password: password,
+        }),
+      });
+      const data = await response.json();
 
-      // Optional: Toast message
-      toast.success("Account created successfully!");
+      if (response.ok) {
+        setAccountCreated(true);
 
-      // Redirect to login after 5 seconds
-      setTimeout(() => {
-        navigate("/login");
-      }, 5000);
+        // Optional: Toast message
+        toast.success("Account created successfully!");
+
+        // Redirect to login after 5 seconds
+        setTimeout(() => {
+          navigate("/login");
+        }, 5000);
+      } else {
+        toast.error(data.message || "Registration failed.");
+      }
     } catch (error) {
       toast.error(error.message || "Something went wrong");
     }
