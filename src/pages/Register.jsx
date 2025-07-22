@@ -4,6 +4,7 @@ import { auth, db } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
 
 function Register() {
   const [fname, setFname] = useState("");
@@ -17,7 +18,8 @@ function Register() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
+      debugger;
+      const response = await fetch(`${API_BASE_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,6 +43,8 @@ function Register() {
         setTimeout(() => {
           navigate("/login");
         }, 5000);
+      } else if (response.status === 409) {
+        toast.error(data.message || "Registration failed.");
       } else {
         toast.error(data.message || "Registration failed.");
       }

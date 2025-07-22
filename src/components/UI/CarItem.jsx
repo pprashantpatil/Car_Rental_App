@@ -3,32 +3,61 @@ import { Col } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../../styles/car-item.css";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
+import { toast } from "react-toastify";
 const CarItem = (props) => {
-  const { imgUrl, model, carName, automatic, speed, price } = props.item;
+  const { imgUrl, model, carName, automatic, speed, price, isActive, id } =
+    props.item;
   const navigate = useNavigate();
+  const handleToggleActive = (carId, newStatus) => {
+    axios
+      .put(`https://carrentalapi-qyxk.onrender.com/api/${carId}/status`, {
+        isActive: newStatus,
+      })
+      .then(() => {
+        const msg = newStatus
+          ? "Car has been activated successfully."
+          : "Car has been deactivated successfully.";
+        toast.success(msg);
+        props.onStatusChange();
+      })
+      .catch((err) => console.error("Status toggle failed", err));
+  };
+
+  const getImageUrl = (path) =>
+    `https://carrentalapi-qyxk.onrender.com/${path}`;
   return (
     <Col lg="4" md="4" sm="6" className="mb-5 hover-scale">
       <div className="car__item">
-        <div className="car__img">
-          <img src={imgUrl} alt="" className="w-100" />
+        <div className="car__img position-relative">
+          <img src={getImageUrl(imgUrl)} alt="" className="w-100" />
+
+          {/* Enable/Disable Toggle Icon */}
+          <span
+            className="position-absolute top-0 end-0 m-2 p-2 bg-light rounded-circle"
+            style={{ cursor: "pointer", zIndex: 10 }}
+            title={!isActive ? "Click to Disable" : "Click to Enable"}
+            onClick={() => handleToggleActive(id, isActive)}
+          >
+            <i className={`ri-eye-${!isActive ? "line" : "off-line"}`}></i>
+          </span>
         </div>
 
-        <div className="car__item-content mt-4 ">
+        <div className="car__item-content mt-4">
           <h4 className="section__title text-center">{carName}</h4>
-          <h6 className="rent__price text-center mt-">
+          <h6 className="rent__price text-center">
             Rs.{price}.00 <span>/ Day</span>
           </h6>
 
           <div className="car__item-info d-flex align-items-center justify-content-between mt-3 mb-4">
             <span className=" d-flex align-items-center gap-1">
-              <i class="ri-car-line"></i> {model}
+              <i className="ri-car-line"></i> {model}
             </span>
             <span className=" d-flex align-items-center gap-1">
-              <i class="ri-settings-2-line"></i> {automatic}
+              <i className="ri-settings-2-line"></i> {automatic}
             </span>
             <span className=" d-flex align-items-center gap-1">
-              <i class="ri-timer-flash-line"></i> {speed}
+              <i className="ri-timer-flash-line"></i> {speed}
             </span>
           </div>
 

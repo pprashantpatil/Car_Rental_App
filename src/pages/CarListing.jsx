@@ -1,25 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import CarItem from "../components/UI/CarItem";
 import carData from "../assets/data/carData";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CarListing = () => {
   const [sortType, setSortType] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const filteredCars = [...carData]
-    .filter((car) => (selectedBrand ? car.brand === selectedBrand : true))
-    .filter((car) =>
-      car.carName.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      if (sortType === "lowToHigh") return a.price - b.price;
-      if (sortType === "highToLow") return b.price - a.price;
-      return 0;
-    });
+  const [loginType, setloginType] = useState("");
+  const [cars, setCars] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
+  const navigate = useNavigate();
 
+  const handleAddNewCar = () => {
+    navigate("/addcar");
+  };
+  useEffect(() => {
+    fetchlogintype(); // Run on mount
+
+    const handleStorageChange = () => {
+      fetchlogintype(); // Run again if localStorage changes (after login)
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("https://carrentalapi-qyxk.onrender.com/api/getcars")
+      .then((res) => setCars(res.data))
+      .catch((err) => console.error("Error fetching cars:", err));
+  }, []);
+
+  const fetchCars = async () => {
+    axios
+      .get("https://carrentalapi-qyxk.onrender.com/api/getcars")
+      .then((res) => setCars(res.data))
+      .catch((err) => console.error("Error fetching cars:", err));
+  };
+  useEffect(() => {
+    const filtered = cars
+      .filter((car) => (selectedBrand ? car.brand === selectedBrand : true))
+      .filter((car) =>
+        car.carName.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sortType === "lowToHigh") return a.price - b.price;
+        if (sortType === "highToLow") return b.price - a.price;
+        return 0;
+      });
+
+    setFilteredCars(filtered); // Save filtered list to state
+  }, [cars, selectedBrand, searchTerm, sortType]);
+
+  const fetchlogintype = async () => {
+    const loginType = localStorage.getItem("logintype");
+
+    if (!loginType) {
+      console.log("No email found in localStorage.");
+      return;
+    }
+
+    setloginType(loginType);
+  };
   return (
     <Helmet title="Cars">
       <CommonSection title="Car Listing" />
@@ -96,11 +145,23 @@ const CarListing = () => {
                     <i className="ri-refresh-line me-1"></i>Reset
                   </button>
                 </div>
+                {loginType === "admin" && (
+                  <div className="d-flex flex-column">
+                    <label className="invisible mb-1">Add Car</label>{" "}
+                    {/* Keeps height alignment */}
+                    <button
+                      className="btn btn-success px-4"
+                      onClick={handleAddNewCar} // replace with your actual handler
+                    >
+                      <i className="ri-add-line me-1"></i>Add Car
+                    </button>
+                  </div>
+                )}
               </div>
             </Col>
 
             {filteredCars.map((item) => (
-              <CarItem item={item} key={item.id} />
+              <CarItem item={item} onStatusChange={fetchCars} key={item.id} />
             ))}
           </Row>
         </Container>

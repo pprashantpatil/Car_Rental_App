@@ -14,6 +14,7 @@ import BookingPage from "../pages/BookingPage";
 import { auth } from "../firebase";
 
 import Faq from "../pages/Faq";
+import AddCar from "../pages/AddCar";
 
 const Routers = () => {
   const [user, setUser] = useState();
@@ -36,6 +37,7 @@ const Routers = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
+      <Route path="/addcar" element={<AddCar />} />
       <Route path="/booking/:slug" element={<BookingPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
