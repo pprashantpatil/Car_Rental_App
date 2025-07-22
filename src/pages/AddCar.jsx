@@ -1,9 +1,22 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Select from "react-select";
+import { useLoading } from "../contexts/LoadingContext";
+
 import axios from "axios";
 import API_BASE_URL from "../config";
-const brands = ["Tesla", "BMW", "Audi", "Mercedes", "Toyota", "Hyundai", "Kia"];
+import { toast } from "react-toastify";
+
+const brands = [
+  "Tesla",
+  "Tata",
+  "BMW",
+  "Audi",
+  "Mercedes",
+  "Toyota",
+  "Hyundai",
+  "Kia",
+];
 const brandOptions = brands.map((b) => ({ value: b, label: b }));
 const models = [
   "Model X",
@@ -28,7 +41,9 @@ const features = [
   "Ambient Lighting",
 ];
 const featuresOptions = features.map((b) => ({ value: b, label: b }));
+
 const AddCar = () => {
+  const { showLoader, hideLoader } = useLoading();
   const [step, setStep] = useState(0);
   const [carData, setCarData] = useState({
     brand: "",
@@ -56,6 +71,7 @@ const AddCar = () => {
   };
 
   const handleSubmit = async () => {
+    showLoader();
     const formData = new FormData();
     Object.entries(carData).forEach(([key, value]) => {
       if (key === "features") {
@@ -69,10 +85,13 @@ const AddCar = () => {
 
     try {
       const res = await axios.post(`${API_BASE_URL}/api/addcar`, formData);
+      hideLoader();
+      toast.success("Car added successfully!");
       alert("Car added successfully!");
     } catch (err) {
       console.error(err);
-      alert("Failed to add car.");
+      hideLoader();
+      toast.error("failed to add car");
     }
   };
 
