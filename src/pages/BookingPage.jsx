@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import PaymentFailed from "../../src/assets/icons/PaymentFailed.mp4";
 import bookingcompleted from "../../src/assets/icons/bookingcompleted.mp4";
-
+import LocationSearchInput from "../../src/components/LocationSearchInput";
+import "../../src/styles/Loading-context.css";
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
   visible: (i = 1) => ({
@@ -22,7 +23,8 @@ const BookingPage = () => {
   const [reserved, setReserved] = useState(false);
   const [bookingExpired, setBookingExpired] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
-
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [dropLocation, setDropLocation] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -125,14 +127,18 @@ const BookingPage = () => {
             <Row>
               <Col md={6}>
                 <FormGroup>
-                  <Label>📍 From</Label>
-                  <Input type="text" placeholder="Pickup Location" required />
+                  <LocationSearchInput
+                    label="📍 From"
+                    onSelect={(location) => setPickupLocation(location)}
+                  />
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
-                  <Label>📍 To</Label>
-                  <Input type="text" placeholder="Drop Location" required />
+                  <LocationSearchInput
+                    label="🏁 To"
+                    onSelect={(location) => setDropLocation(location)}
+                  />
                 </FormGroup>
               </Col>
             </Row>

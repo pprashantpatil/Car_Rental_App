@@ -5,27 +5,39 @@ import "../../styles/car-item.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useLoading } from "../../contexts/LoadingContext";
+
 const CarItem = (props) => {
+  const { showLoader, hideLoader } = useLoading();
+
   const { imgUrl, model, carName, automatic, speed, price, isActive, id } =
     props.item;
+  hideLoader();
   const navigate = useNavigate();
+
   const handleToggleActive = (carId, newStatus) => {
+    showLoader();
     axios
       .put(`https://carrentalapi-qyxk.onrender.com/api/${carId}/status`, {
         isActive: newStatus,
       })
       .then(() => {
+        hideLoader();
         const msg = newStatus
           ? "Car has been activated successfully."
           : "Car has been deactivated successfully.";
         toast.success(msg);
         props.onStatusChange();
       })
-      .catch((err) => console.error("Status toggle failed", err));
+      .catch((err) => {
+        console.error("Status toggle failed", err);
+        hideLoader();
+      });
   };
 
   const getImageUrl = (path) =>
     `https://carrentalapi-qyxk.onrender.com/${path}`;
+
   return (
     <Col lg="4" md="4" sm="6" className="mb-5 hover-scale">
       <div className="car__item">

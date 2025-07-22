@@ -6,6 +6,7 @@ import CarItem from "../components/UI/CarItem";
 import carData from "../assets/data/carData";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useLoading } from "../contexts/LoadingContext";
 
 const CarListing = () => {
   const [sortType, setSortType] = useState("");
@@ -15,6 +16,7 @@ const CarListing = () => {
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoading();
 
   const handleAddNewCar = () => {
     navigate("/addcar");
@@ -32,10 +34,18 @@ const CarListing = () => {
   }, []);
 
   useEffect(() => {
+    showLoader();
+
     axios
       .get("https://carrentalapi-qyxk.onrender.com/api/getcars")
-      .then((res) => setCars(res.data))
-      .catch((err) => console.error("Error fetching cars:", err));
+      .then((res) => {
+        setCars(res.data);
+        hideLoader(); // ✅ called after successful response
+      })
+      .catch((err) => {
+        console.error("Error fetching cars:", err);
+        hideLoader(); // ✅ also hide loader on error
+      });
   }, []);
 
   const fetchCars = async () => {

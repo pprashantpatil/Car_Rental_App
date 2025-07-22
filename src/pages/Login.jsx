@@ -7,12 +7,14 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import API_BASE_URL from "../config";
+import { useLoading } from "../contexts/LoadingContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userselected, setuserselected] = useState();
   const [logintype, setlogintype] = useState();
+  const { showLoader, hideLoader } = useLoading();
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     debugger;
@@ -20,6 +22,7 @@ function Login() {
     // Handle login logic here
 
     if (userselected == "user") {
+      showLoader();
       const response = await fetch(`${API_BASE_URL}/api/login`, {
         method: "POST",
         headers: {
@@ -32,21 +35,26 @@ function Login() {
       });
       const data = await response.json();
       if (response.status === 200) {
+        hideLoader();
         localStorage.setItem("email", data.user.Email);
         localStorage.setItem("logintype", "user");
         window.dispatchEvent(new Event("storage")); // 👈 trigger Header to re-fetch
         navigate("/cars");
       } else {
-        toast.error("login failed");
+        hideLoader();
+        toast.error("login failed,incorrect username or password");
       }
     } else {
+      showLoader();
       if (email == "admin" && password == "welcome") {
         toast.success("admin login success");
         localStorage.setItem("email", "admin");
         localStorage.setItem("logintype", "admin");
         window.dispatchEvent(new Event("storage")); // 👈 trigger Header to re-fetch
+        showLoader();
         navigate("/cars");
       } else {
+        hideLoader();
         toast.error("admin login failed");
       }
     }

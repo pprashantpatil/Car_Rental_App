@@ -5,7 +5,7 @@ import { setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config";
-
+import { useLoading } from "../contexts/LoadingContext";
 function Register() {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -14,10 +14,12 @@ function Register() {
   const [accountCreated, setAccountCreated] = useState(false);
   const navigate = useNavigate();
 
+  const { showLoader, hideLoader } = useLoading();
   const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
+      showLoader();
       debugger;
       const response = await fetch(`${API_BASE_URL}/api/register`, {
         method: "POST",
@@ -35,7 +37,7 @@ function Register() {
 
       if (response.ok) {
         setAccountCreated(true);
-
+        hideLoader();
         // Optional: Toast message
         toast.success("Account created successfully!");
 
@@ -44,11 +46,14 @@ function Register() {
           navigate("/login");
         }, 5000);
       } else if (response.status === 409) {
+        hideLoader();
         toast.error(data.message || "Registration failed.");
       } else {
+        hideLoader();
         toast.error(data.message || "Registration failed.");
       }
     } catch (error) {
+      hideLoader();
       toast.error(error.message || "Something went wrong");
     }
   };

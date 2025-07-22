@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Row, Col, Label, Input } from "reactstrap";
 import { motion } from "framer-motion";
-
+import LocationSearchInput from "../LocationSearchInput";
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
   visible: (i = 1) => ({
@@ -13,6 +13,8 @@ const fadeIn = {
 
 const BookingForm = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [dropLocation, setDropLocation] = useState("");
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -98,7 +100,7 @@ const BookingForm = () => {
           <Row>
             <Col md={6}>
               <FormGroup>
-                <motion.div
+                {/* <motion.div
                   variants={fadeIn}
                   initial="hidden"
                   animate="visible"
@@ -106,12 +108,23 @@ const BookingForm = () => {
                 >
                   <Label>📍 From</Label>
                   <Input type="text" placeholder="Pickup Location" required />
+                </motion.div> */}
+                <motion.div
+                  variants={fadeIn}
+                  initial="hidden"
+                  animate="visible"
+                  custom={5}
+                >
+                  <LocationSearchInput
+                    label="📍 From"
+                    onSelect={(location) => setPickupLocation(location)}
+                  />
                 </motion.div>
               </FormGroup>
             </Col>
             <Col md={6}>
               <FormGroup>
-                <motion.div
+                {/* <motion.div
                   variants={fadeIn}
                   initial="hidden"
                   animate="visible"
@@ -119,6 +132,17 @@ const BookingForm = () => {
                 >
                   <Label>📍 To</Label>
                   <Input type="text" placeholder="Drop Location" required />
+                </motion.div> */}
+                <motion.div
+                  variants={fadeIn}
+                  initial="hidden"
+                  animate="visible"
+                  custom={6}
+                >
+                  <LocationSearchInput
+                    label="🏁 To"
+                    onSelect={(location) => setDropLocation(location)}
+                  />
                 </motion.div>
               </FormGroup>
             </Col>

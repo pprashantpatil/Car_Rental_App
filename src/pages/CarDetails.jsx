@@ -11,10 +11,13 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import "../../src/styles/cardetails.css";
 import axios from "axios";
+
+import { useLoading } from "../contexts/LoadingContext";
 const CarDetails = () => {
   debugger;
   const { slug } = useParams();
   const [singleCarItem, setsingleCarItem] = useState(null);
+  const { showLoader, hideLoader } = useLoading();
   const getImageUrl = (path) =>
     `https://carrentalapi-qyxk.onrender.com/${path}`;
   //const singleCarItem = carData.find((item) => item.carName === slug);
@@ -25,12 +28,17 @@ const CarDetails = () => {
 
   useEffect(() => {
     debugger;
+    showLoader();
     axios
       .get("https://carrentalapi-qyxk.onrender.com/api/getcars")
-      .then((res) =>
-        setsingleCarItem(res.data.find((item) => item.carName === slug))
-      )
-      .catch((err) => console.error("Error fetching cars:", err));
+      .then((res) => {
+        setsingleCarItem(res.data.find((item) => item.carName === slug));
+        hideLoader();
+      })
+      .catch((err) => {
+        console.error("Error fetching cars:", err);
+        hideLoader();
+      });
     console.log("singleCarItem", singleCarItem);
   }, [slug]);
   return (
