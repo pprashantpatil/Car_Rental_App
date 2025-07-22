@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form, FormGroup, Row, Col, Label, Input } from "reactstrap";
 import { motion } from "framer-motion";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import PaymentFailed from "../../src/assets/icons/PaymentFailed.mp4";
 import bookingcompleted from "../../src/assets/icons/bookingcompleted.mp4";
 import LocationSearchInput from "../../src/components/LocationSearchInput";
 import "../../src/styles/Loading-context.css";
+import WhatsAppSender from "../../src/components/WhatsAppSender";
 const fadeIn = {
   hidden: { opacity: 0, y: 40 },
   visible: (i = 1) => ({
@@ -16,8 +18,12 @@ const fadeIn = {
 };
 
 const BookingPage = () => {
+  const { slug } = useParams();
   const [submitted, setSubmitted] = useState(false);
   const [method, setMethod] = useState("");
+  const [selectedCar, setselectedCar] = useState(slug);
+  const [calculatedAmount, setcalculatedAmount] = useState(1000);
+
   const [otp, setOtp] = useState("");
   const [processing, setProcessing] = useState(false);
   const [reserved, setReserved] = useState(false);
@@ -25,11 +31,31 @@ const BookingPage = () => {
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropLocation, setDropLocation] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    pickup: "",
+    drop: "",
+    passengers: "1",
+    luggage: "1",
+    date: "",
+    time: "",
+    notes: "",
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
   };
+  useEffect(() => {
+    console.log("Slug from URL:", slug);
 
+    if (slug) {
+      setselectedCar(slug); // Set when component mounts
+    }
+  }, [slug]);
   useEffect(() => {
     if (!submitted || reserved || bookingExpired) return;
     if (timeLeft <= 0) return setBookingExpired(true);
@@ -38,6 +64,7 @@ const BookingPage = () => {
   }, [submitted, reserved, bookingExpired, timeLeft]);
 
   const handleReserve = () => {
+    //console.log(formData);
     setProcessing(true);
     setTimeout(() => {
       setProcessing(false);
@@ -98,13 +125,29 @@ const BookingPage = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label>👤 First Name</Label>
-                  <Input type="text" placeholder="John" required />
+                  <Input
+                    type="text"
+                    placeholder="John"
+                    required
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                  />
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
                   <Label>👤 Last Name</Label>
-                  <Input type="text" placeholder="Doe" required />
+                  <Input
+                    type="text"
+                    placeholder="Doe"
+                    required
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -113,13 +156,29 @@ const BookingPage = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label>📧 Email</Label>
-                  <Input type="email" placeholder="you@example.com" required />
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                  />
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
                   <Label>📞 Phone</Label>
-                  <Input type="tel" placeholder="+91XXXXXXXXXX" required />
+                  <Input
+                    type="tel"
+                    placeholder="+91XXXXXXXXXX"
+                    required
+                    value={formData.phone}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -129,7 +188,9 @@ const BookingPage = () => {
                 <FormGroup>
                   <LocationSearchInput
                     label="📍 From"
-                    onSelect={(location) => setPickupLocation(location)}
+                    onSelect={(location) =>
+                      setFormData((prev) => ({ ...prev, pickup: location }))
+                    }
                   />
                 </FormGroup>
               </Col>
@@ -137,7 +198,9 @@ const BookingPage = () => {
                 <FormGroup>
                   <LocationSearchInput
                     label="🏁 To"
-                    onSelect={(location) => setDropLocation(location)}
+                    onSelect={(location) =>
+                      setFormData((prev) => ({ ...prev, drop: location }))
+                    }
                   />
                 </FormGroup>
               </Col>
@@ -147,7 +210,13 @@ const BookingPage = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label>👥 Passengers</Label>
-                  <Input type="select">
+                  <Input
+                    type="select"
+                    value={formData.passengers}
+                    onChange={(e) =>
+                      setFormData({ ...formData, passengers: e.target.value })
+                    }
+                  >
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -158,7 +227,13 @@ const BookingPage = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label>🧳 Luggage</Label>
-                  <Input type="select">
+                  <Input
+                    type="select"
+                    value={formData.luggage}
+                    onChange={(e) =>
+                      setFormData({ ...formData, luggage: e.target.value })
+                    }
+                  >
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -172,13 +247,27 @@ const BookingPage = () => {
               <Col md={6}>
                 <FormGroup>
                   <Label>📅 Date</Label>
-                  <Input type="date" required />
+                  <Input
+                    type="date"
+                    required
+                    value={formData.date}
+                    onChange={(e) =>
+                      setFormData({ ...formData, date: e.target.value })
+                    }
+                  />
                 </FormGroup>
               </Col>
               <Col md={6}>
                 <FormGroup>
                   <Label>⏰ Time</Label>
-                  <Input type="time" required />
+                  <Input
+                    type="time"
+                    required
+                    value={formData.time}
+                    onChange={(e) =>
+                      setFormData({ ...formData, time: e.target.value })
+                    }
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -189,6 +278,10 @@ const BookingPage = () => {
                 type="textarea"
                 rows="3"
                 placeholder="Any special instructions?"
+                value={formData.notes}
+                onChange={(e) =>
+                  setFormData({ ...formData, notes: e.target.value })
+                }
               />
             </FormGroup>
 
@@ -309,6 +402,21 @@ const BookingPage = () => {
         </div>
       ) : (
         <div className="text-center mt-5">
+          {/* ✅ WhatsApp auto message trigger */}
+          <WhatsAppSender
+            phone={formData.phone} // or "+9199xxxxxxx"
+            booking={{
+              firstName: formData.firstName,
+              lastName: formData.lastName,
+              carName: selectedCar || "N/A",
+              pickupDate: formData.date,
+              pickupTime: formData.time,
+              pickupLocation: formData?.pickup.address || "N/A",
+              dropLocation: formData?.drop.address || "N/A",
+              totalAmount: calculatedAmount,
+            }}
+          />
+
           <video
             src={bookingcompleted}
             autoPlay
