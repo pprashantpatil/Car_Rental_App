@@ -39,7 +39,15 @@ const CarItem = (props) => {
             title={!isActive ? "Click to Disable" : "Click to Enable"}
             onClick={() => handleToggleActive(id, isActive)}
           >
-            <i className={`ri-eye-${!isActive ? "line" : "off-line"}`}></i>
+            <i
+              className={`ri-checkbox-circle-line`}
+              style={{
+                fontSize: "1.6rem",
+                color: !isActive ? "#28a745" : "#adb5bd", // green if active, gray if inactive
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+              }}
+            />
           </span>
         </div>
 
