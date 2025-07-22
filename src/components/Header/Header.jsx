@@ -37,6 +37,11 @@ const navLinks = [
     display: "FAQ",
     icon: "ri-question-answer-line",
   },
+  {
+    path: "/login",
+    display: "Login/Register",
+    icon: "ri-user-line",
+  },
 ];
 
 const Header = () => {
